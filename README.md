@@ -1,6 +1,10 @@
 # envopt
+
+<img src="https://travis-ci.org/amancevice/envopt.svg?branch=master"/>
+
 Wrapper for [docopt](https://github.com/docopt/docopt) to allow ENV variables to override default arguments.
 
+Last updated: *`0.0.1`*
 
 ## Usage
 
