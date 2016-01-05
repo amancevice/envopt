@@ -29,14 +29,16 @@ class EnvOption(docopt.Option):
             else:
                 argcount = 1
             env = env.lstrip('-').replace('-', '_').upper()
+        env = _ENV_PREFIX+env
+        # Fetch input value
         if argcount:
             matched = re.findall(r'\[default: (.*)\]', description, flags=re.I)
             value = matched[0] if matched else None
             # Replace value if the placeholder exists as an ENV variable
-            value = os.getenv(_ENV_PREFIX+env, value)
-        elif value is False:
-            # If ENV exists, use True
-            value = _ENV_PREFIX+env in os.environ
+            value = os.getenv(env, value)
+        # Fetch switch value
+        elif value is False and os.getenv(env, '').lower() in ('true', '1'):
+            value = True
         return cls(short, lng, argcount, value)
 
 

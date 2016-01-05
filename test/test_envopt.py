@@ -29,9 +29,9 @@ def test_long_opt_defaults():
 
 def test_long_opt_with_env():
     os.environ['A_OPT'] = 'bar'
-    os.environ['CEE']   = '1'
+    os.environ['CEE']   = 'true'
     os.environ['B']     = 'baz'
-    os.environ['D']     = '1'
+    os.environ['D']     = 'true'
     returned = envopt(__doc__)
     expected = {
         '--a-opt' : 'bar',
@@ -66,9 +66,9 @@ def test_long_opt_defaults_with_prefix():
 
 def test_long_opt_with_env_with_prefix():
     os.environ['MY_A_OPT'] = 'bar'
-    os.environ['MY_CEE']   = '1'
+    os.environ['MY_CEE']   = 'true'
     os.environ['MY_B']     = 'baz'
-    os.environ['MY_D']     = '1'
+    os.environ['MY_D']     = 'true'
     returned = envopt(__doc__, env_prefix='MY')
     expected = {
         '--a-opt' : 'bar',
