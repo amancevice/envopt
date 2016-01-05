@@ -8,35 +8,42 @@ import docopt
 __all__ = ['envopt']
 
 
+_ENV_PREFIX = None
+
+
 class EnvOption(docopt.Option):
+    """ Override of the docopt.Option class. """
     @classmethod
-    def parse(class_, option_description):
+    def parse(cls, option_description):
         """ Parse the options using virtually the same code as docopt.
             If an ENV variable exists with the same name as the placeholder,
             use that value over the traditional default. """
-        short, long, argcount, value, env = None, None, 0, False, None
+        short, lng, argcount, value, env = None, None, 0, False, None
         options, _, description = option_description.strip().partition('  ')
         options = options.replace(',', ' ').replace('=', ' ')
-        for s in options.split():
-            if s.startswith('--'):
-                long = s
-            elif s.startswith('-'):
-                short = s
+        for sec in options.split():
+            if sec.startswith('--'):
+                lng = env = sec
+            elif sec.startswith('-'):
+                short = env = sec
             else:
                 argcount = 1
-                # Store option placeholder as ENV name
-                env = s
+            env = env.lstrip('-').replace('-', '_').upper()
         if argcount:
-            matched = re.findall('\[default: (.*)\]', description, flags=re.I)
+            matched = re.findall(r'\[default: (.*)\]', description, flags=re.I)
             value = matched[0] if matched else None
             # Replace value if the placeholder exists as an ENV variable
-            if env is not None:
-                value = os.getenv(env, value)
-        return class_(short, long, argcount, value)
+            value = os.getenv(_ENV_PREFIX+env, value)
+        elif value is False:
+            # If ENV exists, use True
+            value = _ENV_PREFIX+env in os.environ
+        return cls(short, lng, argcount, value)
 
 
-def envopt(doc, argv=None, help=True, version=None, options_first=False):
-    return docopt.docopt(doc, argv, help, version, options_first)
+def envopt(doc, argv=None, hlp=True, version=None, options_first=False, env_prefix=None):
+    """ Override of docopt.docopt(). """
+    globals()['_ENV_PREFIX'] = '' if env_prefix is None else "%s_" % env_prefix
+    return docopt.docopt(doc, argv, hlp, version, options_first)
 
 
 docopt.Option = EnvOption
