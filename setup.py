@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 
 NAME    = "envopt"
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 AUTHOR  = "amancevice"
 EMAIL   = "smallweirdnum@gmail.com"
 DESC    = "Wrap docopt to allow ENV variables as argument defaults"
