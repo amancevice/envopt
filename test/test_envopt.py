@@ -15,9 +15,9 @@ Options:
 import os
 import mock
 import nose.tools
-from envopt import dochelper
-from envopt import envopt
-from envopt import EnvOption
+from envopt.envopt import dochelper
+from envopt.envopt import envopt
+from envopt.envopt import EnvOption
 
 
 def assert_equal(*args, **kwargs):
