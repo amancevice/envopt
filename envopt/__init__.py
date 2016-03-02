@@ -2,17 +2,25 @@
 
 import os
 import re
+import sys
 import docopt
 
 
 __all__ = ['envopt']
 
 
-_ENV_PREFIX = None
-
-
 class EnvOption(docopt.Option):
     """ Override of the docopt.Option class. """
+    __prefix__ = None
+
+    @classmethod
+    def prefix(cls):
+        return cls.__prefix__ or ''
+
+    @classmethod
+    def set_prefix(cls, prefix):
+        cls.__prefix__ = prefix
+
     @classmethod
     def parse(cls, option_description):
         """ Parse the options using virtually the same code as docopt.
@@ -29,7 +37,7 @@ class EnvOption(docopt.Option):
             else:
                 argcount = 1
             env = env.lstrip('-').replace('-', '_').upper()
-        env = _ENV_PREFIX+env
+        env = cls.prefix() + env
         # Fetch input value
         if argcount:
             matched = re.findall(r'\[default: (.*)\]', description, flags=re.I)
@@ -44,9 +52,21 @@ class EnvOption(docopt.Option):
 
 def envopt(doc, argv=None, hlp=True, version=None, options_first=False, env_prefix=None):
     """ Override of docopt.docopt(). """
-    globals()['_ENV_PREFIX'] = '' if env_prefix is None else "%s_" % env_prefix
-    return docopt.docopt(doc, argv, hlp, version, options_first)
+    if env_prefix:
+        EnvOption.set_prefix("%s_" % env_prefix)
+    return docopt.docopt(dochelper(doc), argv, hlp, version, options_first)
 
+
+def dochelper(doc):
+    doc_ = doc
+    for default in docopt.parse_defaults(doc):
+        optname = default.name.strip('-').replace('-','_').upper()
+        envname = "%s%s" % (EnvOption.__prefix__ or '', optname)
+        optval = os.getenv(envname)
+        search = r"(%s.*?)\[default: (\$.*?)\]$" % (default.name)
+        replace = "\\1[default: %s]" % optval if optval is not None else "\\1"
+        doc_ = re.sub(search, replace, doc_, flags=re.MULTILINE)
+    return doc_
 
 docopt.Option = EnvOption
 envopt.__doc__ = docopt.docopt.__doc__.replace('docopt', 'envopt')

@@ -4,59 +4,56 @@
 
 Wrapper for [docopt](https://github.com/docopt/docopt) to allow ENV variables to override default arguments.
 
-Last updated: *`0.0.1`*
+Last updated: *`0.1.0`*
 
 ## Usage
 
 Example docopt pydoc:
 
 ```python
-__doc__ = \
-    """ This is an example.
+""" 
+This is an example.
 
-        Usage:
-            python my_example.py [options]
+Usage:
+    python my_example.py [options]
 
-        Options:
-            -a --a-opt OPT  # An example long option [default: foo]
-            -b OPT          # An example short option [default: bar]
-            --cee           # An example long switch option
-            -d              # An example short switch option """
+Options:
+    -a --a-opt OPT  # An example long option with magic default [default: $A_OPT]
+    -b OPT          # An example short option with normal default [default: buzz]
+    --cee           # An example long switch option
+    -d              # An example short switch option
+"""
 ```
 
-Parsing this example without any `ENV` variables set would yield:
+* The value of `--a-opt` will be taken using command line, or from the `ENV` variable `$A_OPT`. If neither is provided the value will be `None`
+* The value of `-b` will be taken from the command line, from the `ENV` variable `$B`. If neither is provided the `default` value `"buzz"` will be used
+* The value of `--cee` will be take from the command line, or from the `ENV` variable `$CEE`. If neither is provided the flag will be set to `False`
+* The value of `-d` will be take from the command line, or from the `ENV` variable `$D`. If neither is provided the flag will be set to `False`
 
-```python
-from envopt import envopt
+Notice the `-a-opt` option has been defined using a "magic" default. Because the default has been defined as the string describing the corresponding `ENV` variable, the value will not only be taken from the `ENV` at execution time, but will also print when the `--help` flag is provided.
 
-print envopt(__doc__)
+So, given the following `ENV` configuration:
 
-{ '--a-opt' : 'foo',
-  '-b'      : 'bar',
-  '--cee'   : False,
-  '-d'      : False }
+```
+A_OPT='Hello, World!'
 ```
 
-However, setting `ENV` variables `A_OPT`, `B`, `CEE`, or `D` will override the given defaults:
+The help message of this script would be:
 
-```python
-import os
-from envopt import envopt
+```
+This is an example.
 
-os.environ['A_OPT'] = 'fizz'
-os.environ['B']     = '1'
-os.environ['CEE']   = 'buzz'
-os.environ['D']     = '1'
+Usage:
+    python my_example.py [options]
 
-print envopt(__doc__)
-
-{ '--a-opt' : 'fizz',
-  '-b'      : 'buzz',
-  '--cee'   : True,
-  '-d'      : True }
+Options:
+    -a --a-opt OPT  # An example long option with magic default [default: Hello, World!]
+    -b OPT          # An example short option with normal default [default: buzz]
+    --cee           # An example long switch option
+    -d              # An example short switch option
 ```
 
-For switch-style arguments, the existence of the `ENV` variable is enough to set the value to `True`. Unset the variable to return the default value to `False`.
+## Using a Prefix
 
 Specifying a `env_prefix` value in the `envopt()` call will prefix `ENV` variables with this prefix right-padded with an underscore:
 
