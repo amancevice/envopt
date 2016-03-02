@@ -61,12 +61,16 @@ def dochelper(doc):
     doc_ = doc
     for default in docopt.parse_defaults(doc):
         optname = default.name.strip('-').replace('-','_').upper()
-        envname = "%s%s" % (EnvOption.__prefix__ or '', optname)
+        envname = EnvOption.prefix() + optname
         optval = os.getenv(envname)
-        search = r"(%s.*?)\[default: (\$.*?)\]$" % (default.name)
-        replace = "\\1[default: %s]" % optval if optval is not None else "\\1"
-        doc_ = re.sub(search, replace, doc_, flags=re.MULTILINE)
+        if optval is not None:
+            search = r"(^ *(%s|%s|%s %s) .*?$)" % (default.short, default.long, default.short, default.long)
+            for match in re.findall(search, doc, re.MULTILINE):
+                whole = match[0]
+                if not re.search(r"\[default: .*?\]", whole):
+                    doc_ = doc.replace(whole, "%s [default: %s]" % (whole, optval))
     return doc_
+
 
 docopt.Option = EnvOption
 envopt.__doc__ = docopt.docopt.__doc__.replace('docopt', 'envopt')

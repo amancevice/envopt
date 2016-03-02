@@ -5,11 +5,10 @@ Usage:
     my_example.py [options]
 
 Options:
-    -a --a-opt OPT  # An example long option [default: $MYPREFIX_A_OPT]
+    -a --a-opt OPT  # An example long option
     -b OPT          # An example short option [default: foo]
     --cee           # An example long switch option
     -d              # An example short switch option
-    -E --env ENV    # An example with interpolation [default: $MYPREFIX_ENV]
 """
 
 
@@ -32,14 +31,14 @@ class TestEnviron(object):
 
     def test_dochelper(self):
         EnvOption.set_prefix('MYPREFIX_')
-        os.environ['MYPREFIX_ENV'] = 'FUZZ'
+        os.environ['MYPREFIX_A_OPT'] = 'FUZZ'
         returned = dochelper(__doc__)
-        expected = __doc__.replace("$MYPREFIX_ENV", "FUZZ")\
-            .replace("[default: $MYPREFIX_A_OPT]", "")\
-            .replace("[default: $MYPREFIX_B]", "")
+        expected = __doc__.replace(
+            "-a --a-opt OPT  # An example long option",
+            "-a --a-opt OPT  # An example long option [default: FUZZ]")
         print returned
         print expected
-        yield assert_equal, returned, expected
+        assert_equal(returned, expected)
 
     def test_no_env_defaults(self):
         returned = envopt(__doc__, argv=())
@@ -47,8 +46,7 @@ class TestEnviron(object):
             '--a-opt' : None,
             '--cee'   : False,
             '-b'      : 'foo',
-            '-d'      : False,
-            '--env'   : None }
+            '-d'      : False}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]
@@ -63,8 +61,7 @@ class TestEnviron(object):
             '--a-opt' : 'bar',
             '--cee'   : True,
             '-b'      : 'baz',
-            '-d'      : True,
-            '--env'   : None }
+            '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]
@@ -78,8 +75,7 @@ class TestEnviron(object):
             '--a-opt' : 'buzz',
             '--cee'   : True,
             '-b'      : 'fizz',
-            '-d'      : True,
-            '--env'   : None }
+            '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]
@@ -90,8 +86,7 @@ class TestEnviron(object):
             '--a-opt' : None,
             '--cee'   : False,
             '-b'      : 'foo',
-            '-d'      : False,
-            '--env'   : None }
+            '-d'      : False}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]
@@ -106,8 +101,7 @@ class TestEnviron(object):
             '--a-opt' : 'bar',
             '--cee'   : True,
             '-b'      : 'baz',
-            '-d'      : True,
-            '--env'   : None }
+            '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]
@@ -121,8 +115,7 @@ class TestEnviron(object):
             '--a-opt' : 'buzz',
             '--cee'   : True,
             '-b'      : 'fizz',
-            '-d'      : True,
-            '--env'   : None }
+            '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.iteritems():
             yield assert_equal, returned[key], expected[key]

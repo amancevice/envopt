@@ -18,7 +18,7 @@ Usage:
     python my_example.py [options]
 
 Options:
-    -a --a-opt OPT  # An example long option with magic default [default: $A_OPT]
+    -a --a-opt OPT  # An example long option with magic default
     -b OPT          # An example short option with normal default [default: buzz]
     --cee           # An example long switch option
     -d              # An example short switch option
