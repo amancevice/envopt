@@ -2,7 +2,6 @@
 
 import os
 import re
-import sys
 import docopt
 
 
@@ -12,10 +11,12 @@ class EnvOption(docopt.Option):
 
     @classmethod
     def prefix(cls):
+        """ Get ENV prefix. """
         return cls.__prefix__ or ''
 
     @classmethod
     def set_prefix(cls, prefix):
+        """ Set ENV prefix. """
         cls.__prefix__ = prefix
 
     @classmethod
@@ -47,6 +48,7 @@ class EnvOption(docopt.Option):
         return cls(short, lng, argcount, value)
 
 
+# pylint: disable=too-many-arguments
 def envopt(doc, argv=None, hlp=True, version=None, options_first=False, env_prefix=None):
     """ Override of docopt.docopt(). """
     if env_prefix:
@@ -55,13 +57,15 @@ def envopt(doc, argv=None, hlp=True, version=None, options_first=False, env_pref
 
 
 def dochelper(doc):
+    """ Helper to add defaults from ENV to pydoc. """
     doc_ = doc
     for default in docopt.parse_defaults(doc):
-        optname = default.name.strip('-').replace('-','_').upper()
+        optname = default.name.strip('-').replace('-', '_').upper()
         envname = EnvOption.prefix() + optname
         optval = os.getenv(envname)
         if optval is not None:
-            search = r"(^ *(%s|%s|%s %s) .*?$)" % (default.short, default.long, default.short, default.long)
+            search = r"(^ *(%s|%s|%s %s) .*?$)" \
+                % (default.short, default.long, default.short, default.long)
             for match in re.findall(search, doc, re.MULTILINE):
                 whole = match[0]
                 if not re.search(r"\[default: .*?\]", whole):
