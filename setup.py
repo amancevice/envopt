@@ -16,7 +16,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 2.7",
     "Topic :: Utilities" ]
 REQUIRES = ["docopt==0.6.2"]
-TEST_REQUIRES = ["nose", "mock"]
+TESTS_REQUIRE = ["nose", "mock"]
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -39,5 +39,5 @@ setup(
     long_description     = read('README.md'),
     classifiers          = CLASSIFIERS,
     install_requires     = REQUIRES,
-    test_requires        = TEST_REQUIRES,
+    tests_require        = TESTS_REQUIRE,
     test_suite           = "nose.collector" )
