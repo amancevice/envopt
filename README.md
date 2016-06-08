@@ -1,6 +1,7 @@
 # envopt
 
-<img src="https://travis-ci.org/amancevice/envopt.svg?branch=master"/>
+[![Build Status](https://travis-ci.org/amancevice/envopt.svg?branch=master)](https://travis-ci.org/amancevice/envopt)
+[![PyPI version](https://badge.fury.io/py/envopt.svg)](https://badge.fury.io/py/envopt)
 
 Wrapper for [docopt](https://github.com/docopt/docopt) to allow ENV variables to override default arguments.
 
