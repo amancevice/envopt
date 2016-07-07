@@ -1,10 +1,14 @@
 language: python
+cache: pip
 python:
-  - "2.7"
-install:
-  - pip install tox
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+install: pip install . mock nose pylint
 script:
-  - tox
+- nosetests
+- pylint envopt
 deploy:
   provider: pypi
   user: amancevice
@@ -12,3 +16,4 @@ deploy:
     secure: KJKC4lgZBqrighsweXrY0BLB+IRWEOMzDgvtbvOOR+WzvKQtHANbKkbR/hRznu94TDyhZF8qA2iJPWxem2G35D/BrZtsjU1yuUYfrOYAEvg5k6JIOHfrX5OYI8gRHpu4p+SAfN87AKRBnLL5gUlupmRMVzNkQi90pOW4yKIri50bnUMVTb1DFJ2D3KsKDkVbo8T8t4xxyT1cxP4Jfjr+OUzQGB0qKWna10aK9fjpG4MVcbD3fWOpxG1syOjRNZXboXAi4HfsYO+W2vUVKxeULDGxVYGrvbi9pvnWWKIxVpdr9v61DLX2sSsVp61yztw5/czMqRvQm/B9ZnqVd1DxZ6b2PJPAYqMxA/fVLg2WBtdlnLJnjeQMkvs92Xxz+xIv83pE+BxVdJk5K3XE3sygfv59XWldFj7xh4betMLmRdVZOE0AAlUmjKAG9ey2B7ya9weqK9efTGU6Sv7Bh+xaslbwotqcQWjuHImTotWyVGAehHDb9aInjQtbaUXRCFJ31odTLGSk7o43wQ+kYI5mLfhpT8A7qIw6kyxU6+2U4wKoy0ggbjaWP8BkmO14JhAnWQsirrGHx2mb/z5IklEotaTJN4hpdbd3n+RXui9DvsYEeGDGRM+Pmflop0FA78ooVnHNgfOs56ThFvvROAQXGXmTz86h+lDphqZf9+cyrwU=
   on:
     tags: true
+    repo: amancevice/redpanda

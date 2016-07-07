@@ -36,8 +36,8 @@ class TestEnviron(object):
         expected = __doc__.replace(
             "-a --a-opt OPT  # An example long option",
             "-a --a-opt OPT  # An example long option [default: FUZZ]")
-        print returned
-        print expected
+        print(returned)
+        print(expected)
         assert_equal(returned, expected)
 
     def test_no_env_defaults(self):
@@ -48,7 +48,7 @@ class TestEnviron(object):
             '-b'      : 'foo',
             '-d'      : False}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env(self):
@@ -63,7 +63,7 @@ class TestEnviron(object):
             '-b'      : 'baz',
             '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_and_override(self):
@@ -77,7 +77,7 @@ class TestEnviron(object):
             '-b'      : 'fizz',
             '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_defaults_with_prefix(self):
@@ -88,7 +88,7 @@ class TestEnviron(object):
             '-b'      : 'foo',
             '-d'      : False}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_with_prefix(self):
@@ -103,7 +103,7 @@ class TestEnviron(object):
             '-b'      : 'baz',
             '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_and_override_with_prefix(self):
@@ -117,5 +117,5 @@ class TestEnviron(object):
             '-b'      : 'fizz',
             '-d'      : True}
         yield assert_equal, returned.keys(), expected.keys()
-        for key, val in returned.iteritems():
+        for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]

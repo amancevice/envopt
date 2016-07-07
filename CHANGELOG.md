@@ -1,5 +1,8 @@
 # Envopt Changelog
 
+0.1.5
+* Support for Python3
+
 0.1.3
 * Re-org
 
