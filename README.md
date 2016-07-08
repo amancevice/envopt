@@ -5,7 +5,6 @@
 
 Wrapper for [docopt](https://github.com/docopt/docopt) to allow ENV variables to override default arguments.
 
-Last updated: *`0.1.0`*
 
 ## Usage
 
