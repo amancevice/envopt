@@ -1,6 +1,5 @@
 """ Fork of docopt. """
 
-
 from .envopt import envopt
 
 

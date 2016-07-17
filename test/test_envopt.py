@@ -11,7 +11,6 @@ Options:
     -d              # An example short switch option
 """
 
-
 import os
 import mock
 import nose.tools
@@ -43,39 +42,39 @@ class TestEnviron(object):
     def test_no_env_defaults(self):
         returned = envopt(__doc__, argv=())
         expected = {
-            '--a-opt' : None,
-            '--cee'   : False,
-            '-b'      : 'foo',
-            '-d'      : False}
+            '--a-opt': None,
+            '--cee': False,
+            '-b': 'foo',
+            '-d': False}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env(self):
         os.environ['A_OPT'] = 'bar'
-        os.environ['CEE']   = 'true'
-        os.environ['B']     = 'baz'
-        os.environ['D']     = 'true'
+        os.environ['CEE'] = 'true'
+        os.environ['B'] = 'baz'
+        os.environ['D'] = 'true'
         returned = envopt(__doc__, argv=())
         expected = {
-            '--a-opt' : 'bar',
-            '--cee'   : True,
-            '-b'      : 'baz',
-            '-d'      : True}
+            '--a-opt': 'bar',
+            '--cee': True,
+            '-b': 'baz',
+            '-d': True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_and_override(self):
         os.environ['A_OPT'] = 'far'
-        os.environ['B']     = 'faz'
+        os.environ['B'] = 'faz'
         argv = '--a-opt', 'buzz', '--cee', '-b', 'fizz', '-d'
         returned = envopt(__doc__, argv=argv)
         expected = {
-            '--a-opt' : 'buzz',
-            '--cee'   : True,
-            '-b'      : 'fizz',
-            '-d'      : True}
+            '--a-opt': 'buzz',
+            '--cee': True,
+            '-b': 'fizz',
+            '-d': True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
@@ -83,39 +82,39 @@ class TestEnviron(object):
     def test_long_opt_defaults_with_prefix(self):
         returned = envopt(__doc__, argv=(), env_prefix='MY')
         expected = {
-            '--a-opt' : None,
-            '--cee'   : False,
-            '-b'      : 'foo',
-            '-d'      : False}
+            '--a-opt': None,
+            '--cee': False,
+            '-b': 'foo',
+            '-d': False}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_with_prefix(self):
         os.environ['MY_A_OPT'] = 'bar'
-        os.environ['MY_CEE']   = 'true'
-        os.environ['MY_B']     = 'baz'
-        os.environ['MY_D']     = 'true'
+        os.environ['MY_CEE'] = 'true'
+        os.environ['MY_B'] = 'baz'
+        os.environ['MY_D'] = 'true'
         returned = envopt(__doc__, argv=(), env_prefix='MY')
         expected = {
-            '--a-opt' : 'bar',
-            '--cee'   : True,
-            '-b'      : 'baz',
-            '-d'      : True}
+            '--a-opt': 'bar',
+            '--cee': True,
+            '-b': 'baz',
+            '-d': True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
 
     def test_long_opt_with_env_and_override_with_prefix(self):
         os.environ['MY_A_OPT'] = 'far'
-        os.environ['MY_B']     = 'faz'
+        os.environ['MY_B'] = 'faz'
         argv = '--a-opt', 'buzz', '--cee', '-b', 'fizz', '-d'
         returned = envopt(__doc__, argv=argv, env_prefix='MY')
         expected = {
-            '--a-opt' : 'buzz',
-            '--cee'   : True,
-            '-b'      : 'fizz',
-            '-d'      : True}
+            '--a-opt': 'buzz',
+            '--cee': True,
+            '-b': 'fizz',
+            '-d': True}
         yield assert_equal, returned.keys(), expected.keys()
         for key, val in returned.items():
             yield assert_equal, returned[key], expected[key]
