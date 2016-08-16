@@ -1,26 +1,89 @@
 # Example use of envopt in a Dockerfile
 
-Use `docker-compose` to see how different options interact with each other.
+See the example [Dockerfile](./Dockerfile) to illustrate the setting of `ENV` variables there.
+
+Building this file with:
 
 ```bash
-docker-compose up -d > /dev/null 2>&1
-docker-compose logs envopt_0
-echo
-docker-compose logs envopt_1
-docker-compose down --rmi local > /dev/null 2>&1
+docker build -t envopt:example
 ```
 
-Output:
+We can see the default help message:
+
+```bash
+docker run --rm envopt:example --help
+```
 
 ```
-Attaching to docker_envopt_0_1
-envopt_0_1  | --option-a :: I started life in the Dockerfile
-envopt_0_1  | --option-b :: I also started life in the Dockerfile
-envopt_0_1  | --option-c :: I am a hardcoded default in myscript.py
-envopt_0_1  | --option-d :: None
+Sample envopt script.
 
-Attaching to docker_envopt_1_1
-envopt_1_1  | --option-a :: I started life in the Dockerfile
-envopt_1_1  | --option-b :: I was passed at runtime as part of the CMD
-envopt_1_1  | --option-c :: I am a hardcoded default in myscript.py
-envopt_1_1  | --option-d :: I was passed at runtime as an ENV variable```
+Usage:
+    myscript.py [options]
+
+Options:
+    -a --option-a OPT  # A [default: I was set in the Dockerfile]
+    -b --option-b OPT  # B [default: I was also set in the Dockerfile]
+    -c --option-c OPT  # C [default: I am hardcoded in myscript.py]
+    -d --option-d OPT  # D
+```
+
+We can choose to run the container with no extra configuration:
+
+```bash
+docker run --rm envopt:example
+```
+
+```
+--option-a :: I was set in the Dockerfile
+--option-b :: I was also set in the Dockerfile
+--option-c :: I am hardcoded in myscript.py
+--option-d :: None
+```
+
+Or we can pass arguments through via the `CMD` parameter of the docker command:
+
+```bash
+docker run --rm envopt:example \
+  --option-b "I was overridden as part of the CMD"
+```
+
+```
+--option-a :: I was set in the Dockerfile
+--option-b :: I was overridden as part of the CMD
+--option-c :: I am hardcoded in myscript.py
+--option-d :: None
+```
+
+Or we can pass arguments through via `ENV` variables:
+
+```bash
+docker run --rm \
+  --env MYSCRIPT_OPTION_D="I was set with --env MYSCRIPT_OPTION_D" \
+  envopt:example
+```
+
+```
+--option-a :: I was set in the Dockerfile
+--option-b :: I was also set in the Dockerfile
+--option-c :: I am hardcoded in myscript.py
+--option-d :: I was set with --env MYSCRIPT_OPTION_D
+```
+
+We can even mix-and-match the two, but the options passed via `CMD` will always win:
+
+```bash
+docker run --rm \
+  --env MYSCRIPT_OPTION_A="I was set with --env MYSCRIPT_OPTION_A" \
+  --env MYSCRIPT_OPTION_B="I was set with --env MYSCRIPT_OPTION_B" \
+  --env MYSCRIPT_OPTION_C="I was set with --env MYSCRIPT_OPTION_C" \
+  --env MYSCRIPT_OPTION_D="I was set with --env MYSCRIPT_OPTION_D" \
+  envopt:example\
+    --option-d "I was overridden as part of the CMD"
+```
+
+```
+--option-a :: I was set with --env MYSCRIPT_OPTION_A
+--option-b :: I was set with --env MYSCRIPT_OPTION_B
+--option-c :: I was set with --env MYSCRIPT_OPTION_C
+--option-d :: I was overridden as part of the CMD
+```

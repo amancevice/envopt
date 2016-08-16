@@ -7,7 +7,7 @@ Usage:
 Options:
     -a --option-a OPT  # A
     -b --option-b OPT  # B
-    -c --option-c OPT  # C [default: I am a hardcoded default in myscript.py]
+    -c --option-c OPT  # C [default: I am hardcoded in myscript.py]
     -d --option-d OPT  # D
 """
 
