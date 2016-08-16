@@ -4,4 +4,6 @@ services:
     build: .
   envopt_1:
     build: .
-    command: "--option-b 'I was passed at runtime and overrode the ENV variable' --option-d 'I was passed at runtime and did not override anything'"
+    command: "--option-b 'I was passed at runtime as part of the CMD'"
+    environment:
+      - "MYSCRIPT_OPTION_D=I was passed at runtime as an ENV variable"
