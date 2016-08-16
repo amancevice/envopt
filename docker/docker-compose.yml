@@ -1,0 +1,7 @@
+version: '2'
+services:
+  envopt_0:
+    build: .
+  envopt_1:
+    build: .
+    command: "--option-b 'I was passed at runtime and overrode the ENV variable' --option-d 'I was passed at runtime and did not override anything'"
