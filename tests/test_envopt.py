@@ -13,14 +13,9 @@ Options:
 
 import os
 import mock
-import nose.tools
 from envopt.envopt import dochelper
 from envopt.envopt import envopt
 from envopt.envopt import EnvOption
-
-
-def assert_equal(*args, **kwargs):
-    return nose.tools.assert_equal(*args, **kwargs)
 
 
 class TestEnviron(object):
@@ -37,7 +32,7 @@ class TestEnviron(object):
             "-a --a-opt OPT  # An example long option [default: FUZZ]")
         print(returned)
         print(expected)
-        assert_equal(returned, expected)
+        assert returned == expected
 
     def test_no_env_defaults(self):
         returned = envopt(__doc__, argv=())
@@ -46,9 +41,9 @@ class TestEnviron(object):
             '--cee': False,
             '-b': 'foo',
             '-d': False}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
 
     def test_long_opt_with_env(self):
         os.environ['A_OPT'] = 'bar'
@@ -61,9 +56,9 @@ class TestEnviron(object):
             '--cee': True,
             '-b': 'baz',
             '-d': True}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
 
     def test_long_opt_with_env_and_override(self):
         os.environ['A_OPT'] = 'far'
@@ -75,9 +70,9 @@ class TestEnviron(object):
             '--cee': True,
             '-b': 'fizz',
             '-d': True}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
 
     def test_long_opt_defaults_with_prefix(self):
         returned = envopt(__doc__, argv=(), env_prefix='MY')
@@ -86,9 +81,9 @@ class TestEnviron(object):
             '--cee': False,
             '-b': 'foo',
             '-d': False}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
 
     def test_long_opt_with_env_with_prefix(self):
         os.environ['MY_A_OPT'] = 'bar'
@@ -101,9 +96,9 @@ class TestEnviron(object):
             '--cee': True,
             '-b': 'baz',
             '-d': True}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
 
     def test_long_opt_with_env_and_override_with_prefix(self):
         os.environ['MY_A_OPT'] = 'far'
@@ -115,6 +110,6 @@ class TestEnviron(object):
             '--cee': True,
             '-b': 'fizz',
             '-d': True}
-        yield assert_equal, returned.keys(), expected.keys()
+        assert returned.keys() == expected.keys()
         for key, val in returned.items():
-            yield assert_equal, returned[key], expected[key]
+            assert returned[key] == expected[key]
