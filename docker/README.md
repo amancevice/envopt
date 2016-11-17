@@ -5,7 +5,7 @@ See the example [Dockerfile](./Dockerfile) to illustrate the setting of `ENV` va
 Building this file with:
 
 ```bash
-docker build -t envopt:example
+docker build -t envopt:example .
 ```
 
 We can see the default help message:
