@@ -75,7 +75,7 @@ class TestEnviron(object):
             assert returned[key] == expected[key]
 
     def test_long_opt_defaults_with_prefix(self):
-        returned = envopt(__doc__, argv=(), env_prefix='MY')
+        returned = envopt(__doc__, argv=(), prefix='MY_')
         expected = {
             '--a-opt': None,
             '--cee': False,
@@ -90,7 +90,7 @@ class TestEnviron(object):
         os.environ['MY_CEE'] = 'true'
         os.environ['MY_B'] = 'baz'
         os.environ['MY_D'] = 'true'
-        returned = envopt(__doc__, argv=(), env_prefix='MY')
+        returned = envopt(__doc__, argv=(), prefix='MY_')
         expected = {
             '--a-opt': 'bar',
             '--cee': True,
@@ -104,7 +104,7 @@ class TestEnviron(object):
         os.environ['MY_A_OPT'] = 'far'
         os.environ['MY_B'] = 'faz'
         argv = '--a-opt', 'buzz', '--cee', '-b', 'fizz', '-d'
-        returned = envopt(__doc__, argv=argv, env_prefix='MY')
+        returned = envopt(__doc__, argv=argv, prefix='MY_')
         expected = {
             '--a-opt': 'buzz',
             '--cee': True,

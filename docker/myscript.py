@@ -15,6 +15,6 @@ from envopt import envopt
 
 
 if __name__ == "__main__":
-    args = envopt(__doc__, env_prefix="MYSCRIPT")
+    args = envopt(__doc__)
     for item in sorted(args.items()):
         print("{} :: {}".format(*item))

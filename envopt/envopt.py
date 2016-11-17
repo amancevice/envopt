@@ -50,10 +50,9 @@ class EnvOption(docopt.Option):
 
 # pylint: disable=too-many-arguments
 def envopt(doc, argv=None, hlp=True, version=None, options_first=False,
-           env_prefix=None):
+           prefix=None):
     """ Override of docopt.docopt(). """
-    if env_prefix:
-        EnvOption.set_prefix("%s_" % env_prefix)
+    EnvOption.set_prefix(prefix or os.getenv('ENVOPT_PREFIX'))
     return docopt.docopt(dochelper(doc), argv, hlp, version, options_first)
 
 
@@ -65,13 +64,13 @@ def dochelper(doc):
         envname = EnvOption.prefix() + optname
         optval = os.getenv(envname)
         if optval is not None:
-            search = r"(^ *(%s|%s|%s %s) .*?$)" \
-                % (default.short, default.long, default.short, default.long)
+            search = r"(^ *({}|{}|{} {}) .*?$)".format(
+                default.short, default.long, default.short, default.long)
             for match in re.findall(search, doc, re.MULTILINE):
                 whole = match[0]
                 if not re.search(r"\[default: .*?\]", whole):
                     doc_ = doc_.replace(
-                        whole, "%s [default: %s]" % (whole, optval))
+                        whole, "{} [default: {}]".format(whole, optval))
     return doc_
 
 

@@ -57,7 +57,7 @@ Options:
 
 ## Using a Prefix
 
-Specifying a `env_prefix` value in the `envopt()` call will prefix `ENV` variables with this prefix right-padded with an underscore:
+Specifying a `prefix` value in the `envopt()` call will prefix `ENV` variables with this prefix right-padded with an underscore:
 
 ```python
 import os
@@ -68,7 +68,7 @@ os.environ['MY_B']     = '1'
 os.environ['MY_CEE']   = 'buzz'
 os.environ['MY_D']     = '1'
 
-print envopt(__doc__, env_prefix='MY')
+print envopt(__doc__, prefix='MY_')
 
 { '--a-opt' : 'fizz',
   '-b'      : 'buzz',
