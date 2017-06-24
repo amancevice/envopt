@@ -29,8 +29,8 @@ Options:
 
 * The value of `--a-opt` will be taken using command line, or from the `ENV` variable `$A_OPT`. If neither is provided the value will be `None`
 * The value of `-b` will be taken from the command line, from the `ENV` variable `$B`. If neither is provided the `default` value `"buzz"` will be used
-* The value of `--cee` will be take from the command line, or from the `ENV` variable `$CEE`. If neither is provided the flag will be set to `False`
-* The value of `-d` will be take from the command line, or from the `ENV` variable `$D`. If neither is provided the flag will be set to `False`
+* The value of `--cee` will be taken from the command line, or from the `ENV` variable `$CEE`. If neither is provided the flag will be set to `False`
+* The value of `-d` will be taken from the command line, or from the `ENV` variable `$D`. If neither is provided the flag will be set to `False`
 
 Notice the `-a-opt` option has been defined using a "magic" default. Because the default has been defined as the string describing the corresponding `ENV` variable, the value will not only be taken from the `ENV` at execution time, but will also print when the `--help` flag is provided.
 
